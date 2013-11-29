@@ -10,7 +10,7 @@ if(!defined('IN_ADMINCP')) exit();
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
 <meta name="author" content="kookxiang" />
 <meta name="copyright" content="KK's Laboratory" />
-<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="shortcut icon" href="favicon.ico" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <meta name="renderer" content="webkit">
 <link rel="stylesheet" href="./style/main.css?version=<?php echo VERSION; ?>" type="text/css" />

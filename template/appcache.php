@@ -1,9 +1,11 @@
 <?php
 if(!defined('IN_KKFRAME')) exit();
+$cache_hash = getSetting('file_hash');
+if(!$cache_hash) saveSetting('file_hash', $cache_hash = random(16));
 ?>
 CACHE MANIFEST
 # Tieba Sign (<?php echo VERSION; ?>)
-# Current user: <?php echo $username; ?> 
+# Cache-ID: "<?php echo $cache_hash; ?>"
 # Author: kookxiang ( www.ikk.me )
 favicon.ico
 style/background.jpg

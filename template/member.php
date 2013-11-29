@@ -2,7 +2,7 @@
 if(!defined('IN_KKFRAME')) exit();
 ?>
 <!DOCTYPE html>
-<html manifest="index.php?action=cache">
+<html>
 <head>
 <title>用户中心 - 贴吧签到助手</title>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
@@ -76,5 +76,6 @@ if($invite_code) echo '<p>邀请码：</p><p><input type="text" name="invite_cod
 <script src="system/js/member.js?version=<?php echo VERSION; ?>"></script>
 <?php HOOK::run('member_footer'); ?>
 </div>
+<iframe src="index.php?action=cache_frame" style="display: none"></iframe>
 </body>
 </html>

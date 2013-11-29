@@ -2,7 +2,7 @@
 if(!defined('IN_KKFRAME')) exit();
 ?>
 <!DOCTYPE html>
-<html manifest="index.php?action=cache">
+<html>
 <head>
 <title>贴吧签到助手</title>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
@@ -10,7 +10,7 @@ if(!defined('IN_KKFRAME')) exit();
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
 <meta name="author" content="kookxiang" />
 <meta name="copyright" content="KK's Laboratory" />
-<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="shortcut icon" href="favicon.ico" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <meta name="renderer" content="webkit">
 <link rel="stylesheet" href="./style/main.css?version=<?php echo VERSION; ?>" type="text/css" />
@@ -133,5 +133,6 @@ var formhash = '<?php echo $formhash; ?>';
 <script src="system/js/fwin.js?version=<?php echo VERSION; ?>"></script>
 <script type="text/javascript" src="//api.ikk.me/guide.js?<?php echo random(8); ?>"></script>
 <?php HOOK::run('page_footer_js'); ?>
+<iframe src="index.php?action=cache_frame" style="display: none"></iframe>
 </body>
 </html>
