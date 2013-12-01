@@ -131,7 +131,7 @@ var formhash = '<?php echo $formhash; ?>';
 </script>
 <script src="system/js/main.js?version=<?php echo VERSION; ?>"></script>
 <script src="system/js/fwin.js?version=<?php echo VERSION; ?>"></script>
-<script type="text/javascript" src="//api.ikk.me/guide.js?<?php echo random(8); ?>"></script>
+<script type="text/javascript">defered_js.push('//api.ikk.me/guide.js');</script>
 <?php HOOK::run('page_footer_js'); ?>
 <iframe src="index.php?action=cache_frame" style="display: none"></iframe>
 </body>

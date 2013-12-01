@@ -59,10 +59,13 @@ $(document).ready(function() {
 	hideloading();
 	while(location.hash.lastIndexOf('#') > 0) location.hash = location.hash.substring(0, location.hash.lastIndexOf('#'));
 	parse_hash();
+	// Load JS
+	load_js();
 });
 
 var guide_viewed = false;
 var stat = [];
+if (typeof defered_js == 'undefined') var defered_js = new Array;
 stat[0] = stat[1] = stat[2] = stat[3] = stat[4] = 0;
 function load_liked_tieba(){
 	showloading();
@@ -224,4 +227,13 @@ function autohide_sidebar(){
 }
 function isMobile(){
 	return $('body').width() <= 550;
+}
+function load_js(){
+	for(id in defered_js){
+		var script;
+		script = document.createElement('script');
+		script.type = 'text/javascript';
+		script.src = defered_js[id];
+		document.getElementsByTagName('head')[0].appendChild(script);
+	}
 }
