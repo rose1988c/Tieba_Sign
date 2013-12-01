@@ -131,28 +131,26 @@ function _client_sign($uid, $tieba){
 	$BDUSS = trim($matches[1]);
 	if(!$BDUSS) return array(-1, '找不到 BDUSS Cookie', 0);
 	$ch = curl_init('http://c.tieba.baidu.com/c/c/forum/sign');
-	curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded'));
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded', 'User-Agent: BaiduTieba for Android 5.1.3', 'client_user_token: '.random(6, true)));
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_COOKIE, get_cookie($uid));
 	curl_setopt($ch, CURLOPT_POST, 1);
 	$array = array(
 		'BDUSS' => $BDUSS,
-		'_client_id' => 'wappc_136'.random(10, true).'_'.random(3, true),
+		'_client_id' => 'wappc_138'.random(10, true).'_'.random(3, true),
 		'_client_type' => '2',
-		'_client_version' => '4.5.5',
+		'_client_version' => '5.1.3',
 		'_phone_imei' => md5(random(16, true)),
-		'app_id' => 'version_campus',
-		'cuid' => md5(random(16)).'|'.random(15, true),
+		'cuid' => strtoupper(md5(random(16))).'|'.random(15, true),
 		'fid' => $tieba['fid'],
 		'from' => 'tieba',
 		'kw' => urldecode($tieba['unicode_name']),
-		'model' => 'MiOne',
+		'model' => 'Aries',
 		'net_type' => '3',
 		'stErrorNums' => '0',
-		'stMethod' => '2',
+		'stMethod' => '1',
 		'stMode' => '1',
 		'stSize' => random(5, true),
-		'stTime' => random(3, true),
+		'stTime' => random(4, true),
 		'stTimesNum' => '0',
 		'tbs' => get_tbs($uid),
 		'timestamp' => time().rand(1000, 9999),
