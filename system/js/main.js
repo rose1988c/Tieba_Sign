@@ -9,7 +9,7 @@ $(document).ready(function() {
 		var content_id = $(this).attr('id').replace('menu_', '#content-');
 		$('.main-content>div').addClass('hidden');
 		$(content_id).removeClass('hidden');
-		var callback = $(this).attr('id').replace('menu_', 'load_');
+		var callback = $(this).attr('id').replace('menu_', 'load_').replace('-', '_');
 		eval('if (typeof '+callback+' == "function") '+callback+'(); ');
 	});
 	$('#show_cookie_setting').click(function (){
@@ -233,7 +233,7 @@ function load_js(){
 		var script;
 		script = document.createElement('script');
 		script.type = 'text/javascript';
-		script.src = defered_js[id];
+		script.src = defered_js[id] + Math.random();
 		document.getElementsByTagName('head')[0].appendChild(script);
 	}
 }
