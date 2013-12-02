@@ -233,7 +233,7 @@ function load_js(){
 		var script;
 		script = document.createElement('script');
 		script.type = 'text/javascript';
-		script.src = defered_js[id] + Math.random();
+		script.src = defered_js[id] + '?' + Math.random();
 		document.getElementsByTagName('head')[0].appendChild(script);
 	}
 }
