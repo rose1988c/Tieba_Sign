@@ -20,11 +20,12 @@ if($count){
 		if($status == 2){
 			if($exp){
 				DB::query("UPDATE sign_log SET status='2', exp='{$exp}' WHERE tid='{$tieba[tid]}' AND date='{$date}'");
+				$num++;
+				$time = 2;
 			}else{
 				DB::query("UPDATE sign_log SET status='2' WHERE tid='{$tieba[tid]}' AND date='{$date}' AND status<2");
+				$time = 0;
 			}
-			$num++;
-			$time = 2;
 		}else{
 			$retry = DB::result_first("SELECT retry FROM sign_log WHERE tid='{$tieba[tid]}' AND date='{$date}' AND status<2");
 			if($retry >= 100){
@@ -37,8 +38,8 @@ if($count){
 			$time = 1;
 		}
 		if(!defined('SIGN_LOOP')) break;
-		sleep($time);
-		if($count > 1) $count--;
+		if($time) sleep($time);
+		if($time && $count > 1) $count--;
 	}
 }else{
 	define('CRON_FINISHED', true);
