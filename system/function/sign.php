@@ -171,6 +171,7 @@ function _client_sign($uid, $tieba){
 		switch($res['error_code']){
 			case '340010':		// 已经签过
 			case '160002':
+			case '3':
 				return array(2, $res['error_msg'], 0);
 			case '1':			// 未登录
 				return array(-1, "ERROR-{$res[error_code]}: ".$res['error_msg'].' （Cookie 过期或不正确）', 0);
