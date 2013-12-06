@@ -11,7 +11,7 @@ while($_uid){
 define('CRON_FINISHED', true);
 
 function check_if_msg($user){
-	$date = date('Ymd', TIMESTAMP+900);
+	$date = date('Ymd', TIMESTAMP);
 	$uid = $user['uid'];
 	$total_num = DB::result_first("SELECT COUNT(*) FROM sign_log WHERE date='{$date}' AND uid='{$uid}'");
 	if($total_num > 200) return false;
@@ -22,8 +22,8 @@ function check_if_msg($user){
 	if($error_num > 0) return true;
 }
 function sendmsg($user){
-	$date = date('Ymd', TIMESTAMP+900);
-	$mdate = date('Y-m-d', TIMESTAMP+900);
+	$date = date('Ymd', TIMESTAMP);
+	$mdate = date('Y-m-d', TIMESTAMP);
 	$uid = $user['uid'];
 	$log = array();
 	$query = DB::query("SELECT * FROM sign_log l LEFT JOIN my_tieba t ON t.tid=l.tid WHERE l.uid='{$uid}' AND l.date='{$date}' ORDER BY l.status DESC, l.tid ASC");
