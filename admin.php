@@ -1,5 +1,7 @@
 <?php
 define('IN_ADMINCP', true);
+define('DISABLE_CRON', true);
+define('DISABLE_PLUGIN', true);
 require_once './system/common.inc.php';
 if(!is_admin($uid)) exit();
 $formhash = substr(md5(substr(TIMESTAMP, 0, -7).$username.$uid.SYS_KEY.ROOT.'ADMINCP_ONLY'), 5, 14);
@@ -59,6 +61,8 @@ switch($_GET['action']){
 		break;
 	case 'save_setting':
 		if($formhash != $_POST['formhash']) showmessage('来源不可信，请重试', 'admin.php#setting');
+		saveSetting('account_switch', ($_POST['account_switch'] ? 1 : 0));
+		saveSetting('register_check', ($_POST['register_check'] ? 1 : 0));
 		saveSetting('autoupdate', ($_POST['autoupdate'] ? 1 : 0));
 		saveSetting('block_register', ($_POST['block_register'] ? 1 : 0));
 		saveSetting('invite_code', daddslashes($_POST['invite_code']));
@@ -140,7 +144,9 @@ switch($_GET['action']){
 		$classname = "plugin_{$plugin_id}";
 		if(!class_exists("plugin_{$plugin_id}", false)) showmessage('插件类不合规范，请与插件作者联系', 'admin.php#plugin');
 		$obj = new $classname();
-		DB::insert('plugin', array('name' => $plugin_id));
+		$version = 0;
+		if(property_exists($obj, 'version')) $version = $obj->version;
+		DB::insert('plugin', array('name' => $plugin_id, 'version' => $version, 'enable' => 0));
 		CACHE::update('plugins');
 		if(method_exists($obj, 'on_install')) $obj->on_install();
 		showmessage('安装插件成功！', 'admin.php#plugin#');
@@ -148,7 +154,7 @@ switch($_GET['action']){
 		if($formhash != $_GET['formhash']) showmessage('来源不可信，请重试', 'admin.php#plugin');
 		$plugin_id = $_GET['pluginid'];
 		if(preg_match('/[^A-Za-z0-9_-.]/', $plugin_id)) showmessage('插件ID不合法，请与插件作者联系', 'admin.php#plugin');
-		DB::query("DELETE FROM plugin WHERE name='{$plugin_id}'");
+		DB::query("DELETE FROM `plugin` WHERE name='{$plugin_id}'");
 		$classfile = ROOT.'./plugins/'.$plugin_id.'/plugin.class.php';
 		if(file_exists($classfile)){
 			require_once $classfile;
@@ -160,10 +166,30 @@ switch($_GET['action']){
 		}
 		CACHE::update('plugins');
 		showmessage('卸载插件成功！', 'admin.php#plugin#');
+	case 'enable_plugin':
+		if($formhash != $_GET['formhash']) showmessage('来源不可信，请重试', 'admin.php#plugin');
+		$plugin_id = $_GET['pluginid'];
+		if(preg_match('/[^A-Za-z0-9_-.]/', $plugin_id)) showmessage('插件ID不合法，请与插件作者联系', 'admin.php#plugin');
+		DB::query("UPDATE `plugin` SET `enable`=1 WHERE name='{$plugin_id}'");
+		CACHE::update('plugins');
+		showmessage('启用插件成功！', 'admin.php#plugin#');
+	case 'disable_plugin':
+		if($formhash != $_GET['formhash']) showmessage('来源不可信，请重试', 'admin.php#plugin');
+		$plugin_id = $_GET['pluginid'];
+		if(preg_match('/[^A-Za-z0-9_-.]/', $plugin_id)) showmessage('插件ID不合法，请与插件作者联系', 'admin.php#plugin');
+		DB::query("UPDATE `plugin` SET `enable`=0 WHERE name='{$plugin_id}'");
+		CACHE::update('plugins');
+		showmessage('禁用插件成功！', 'admin.php#plugin#');
 	case 'config_plugin':
 		$plugin_id = $_REQUEST['pluginid'];
 		if($_POST['submit'] && $formhash != $_GET['formhash']) showmessage('来源不可信，请重试', 'admin.php#plugin');
-		$obj = $_PLUGIN['obj'][$plugin_id];
+		if(preg_match('/[^A-Za-z0-9_-.]/', $plugin_id)) showmessage('插件ID不合法，请与插件作者联系', 'admin.php#plugin');
+		$classfile = ROOT.'./plugins/'.$plugin_id.'/plugin.class.php';
+		if(!file_exists($classfile)) showmessage('插件文件缺失，请与插件作者联系', 'admin.php#plugin');
+		require_once $classfile;
+		$classname = "plugin_{$plugin_id}";
+		if(!class_exists("plugin_{$plugin_id}", false)) showmessage('插件类不合规范，请与插件作者联系', 'admin.php#plugin');
+		$obj = new $classname();
 		if(method_exists($obj, 'on_config')){
 			echo json_encode(array('html' => $obj->on_config()));
 		}else{
@@ -192,9 +218,11 @@ switch($_GET['action']){
 		}
 		showmessage('已经添加至邮件队列，稍后将由系统自动发送', 'admin.php#mail');
 		break;
+	case 'load_plugin':
+		exit(json_encode(getPlugins()));
+		break;
 	default:
 		$classes = getClasses();
-		$plugins = getPlugins();
 		include template('admin');
 		break;
 }
@@ -229,7 +257,7 @@ function getPlugins(){
 		$classname = "plugin_{$folder}";
 		if(!class_exists("plugin_{$folder}", false)) continue;
 		$obj = new $classname();
-		$arr = array('id' => $folder, 'obj' => $obj, 'installed' => in_array($folder, $installed));
+		$arr = array('id' => $folder, 'description' => $obj->description, 'config' => method_exists($obj, 'on_config'), 'enabled' => is_plugin_enabled($folder), 'version' => getPluginVersion($folder), 'installed' => in_array($folder, $installed));
 		if($arr['installed']){
 			$plugins[] = $arr;
 		}else{
@@ -237,4 +265,26 @@ function getPlugins(){
 		}
 	}
 	return array_merge($plugins, $new_plugins);
+}
+function is_plugin_enabled($pluginid){
+	static $enabled_plugin;
+	if(!isset($enabled_plugin)){
+		$enabled_plugin = array();
+		$arr = CACHE::get('plugins');
+		foreach($arr as $plugin){
+			$enabled_plugin[] = $plugin['id'];
+		}
+	}
+	return in_array($pluginid, $enabled_plugin);
+}
+function getPluginVersion($pluginid){
+	static $plugin_version;
+	if(!isset($plugin_version)){
+		$plugin_version = array();
+		$query = DB::query("SELECT name, version FROM `plugin`");
+		while($result = DB::fetch($query)){
+			$plugin_version[ $result['name'] ] = $result['version'];
+		}
+	}
+	return $plugin_version[$pluginid] ? $plugin_version[$pluginid] : 0;
 }

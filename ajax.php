@@ -1,6 +1,6 @@
 <?php
 require_once './system/common.inc.php';
-
+define('DISABLE_CRON', true);
 if(!$uid) exit('Access Denied');
 
 $data = array();

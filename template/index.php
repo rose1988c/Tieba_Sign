@@ -25,11 +25,13 @@ if(!defined('IN_KKFRAME')) exit();
 <ul class="menu hidden" id="member-menu">
 <li id="menu_password"><a href="javascript:;">修改密码</a></li>
 <?php
-foreach ($users as $_uid => $username){
-	echo '<li class="menu_switch_user"><span class="del" href="member.php?action=unbind_user&uid='.$_uid.'&formhash='.$formhash.'">x</span><a href="member.php?action=switch&uid='.$_uid.'&formhash='.$formhash.'">切换至: '.$username.'</a></li>';
+if(getSetting('account_switch')){
+	foreach ($users as $_uid => $username){
+		echo '<li class="menu_switch_user"><span class="del" href="member.php?action=unbind_user&uid='.$_uid.'&formhash='.$formhash.'">x</span><a href="member.php?action=switch&uid='.$_uid.'&formhash='.$formhash.'">切换至: '.$username.'</a></li>';
+	}
+	echo '<li id="menu_adduser"><a href="#user-new">关联其他帐号</a></li>';
 }
 ?>
-<li id="menu_adduser"><a href="#user-new">关联其他帐号</a></li>
 <li id="menu_logout"><a href="member.php?action=logout&hash=<?php echo $formhash; ?>">退出登录</a></li>
 </ul>
 <div class="menubtn"><p>-</p><p>-</p><p>-</p></div>
@@ -70,10 +72,10 @@ foreach ($users as $_uid => $username){
 <form method="post" action="index.php?action=update_setting" id="setting_form" onsubmit="return post_win(this.action, this.id)">
 <input type="hidden" name="formhash" value="<?php echo $formhash; ?>">
 <p>签到方式：</p>
-<p><label><input type="radio" name="sign_method" id="sign_method_3" value="3" checked readonly /> 3.0 (模拟客户端签到，+8经验)</label></p>
+<p><label><input type="radio" name="sign_method" id="sign_method_3" value="3" checked readonly /> V3.0 (模拟客户端签到)</label></p>
 <p>附加签到：</p>
-<p><label><input type="checkbox" disabled name="zhidao_sign" id="zhidao_sign" value="1" /> 自动签到百度知道 (测试版)</label></p>
-<p><label><input type="checkbox" disabled name="wenku_sign" id="wenku_sign" value="1" /> 自动签到百度文库 (测试版)</label></p>
+<p><label><input type="checkbox" disabled name="zhidao_sign" id="zhidao_sign" value="1" /> 自动签到百度知道</label></p>
+<p><label><input type="checkbox" disabled name="wenku_sign" id="wenku_sign" value="1" /> 自动签到百度文库</label></p>
 <p>报告设置：</p>
 <p><label><input type="checkbox" checked disabled name="error_mail" id="error_mail" value="1" /> 当天有无法签到的贴吧时给我发送邮件</label></p>
 <p><label><input type="checkbox" disabled name="send_mail" id="send_mail" value="1" /> 每日发送一封签到报告邮件</label></p>

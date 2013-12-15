@@ -177,8 +177,13 @@ function wrap_text($str) {
 function get_cookie($uid){
 	static $cookie = array();
 	if($cookie[$uid]) return $cookie[$uid];
-	$cookie = CACHE::get('cookie');
+	$cookie[$uid] = DB::result_first("SELECT cookie FROM member_setting WHERE uid='{$uid}'");
+	$cookie[$uid] = strrev(str_rot13(pack('H*', $cookie[$uid])));
 	return $cookie[$uid];
+}
+function save_cookie($uid, $cookie){
+	$cookie = bin2hex(str_rot13(strrev(addslashes($cookie))));
+	DB::result_first("UPDATE member_setting SET cookie='{$cookie}' WHERE uid='{$uid}'");
 }
 function get_username($uid){
 	static $username = array();
@@ -192,6 +197,7 @@ function get_setting($uid){
 	$cached_result = CACHE::get('user_setting_'.$uid);
 	if(!$cached_result){
 		$cached_result = DB::fetch_first("SELECT * FROM member_setting WHERE uid='{$uid}'");
+		unset($cached_result['cookie']);
 		CACHE::save('user_setting_'.$uid, $cached_result);
 	}
 	return $user_setting[$uid] = $cached_result;
@@ -223,6 +229,13 @@ function saveSetting($k, $v){
 	$v = addslashes($v);
 	DB::query("REPLACE INTO setting SET v='{$v}', k='{$k}'");
 	CACHE::update('setting');
+}
+function runquery($sql){
+	$sql = str_replace("\r", "\n", $sql);
+	foreach(explode(";\n", trim($sql)) as $query) {
+		$query = trim($query);
+		if($query) DB::query($query);
+	}
 }
 // Function link
 function get_tbs($uid){

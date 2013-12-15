@@ -52,11 +52,15 @@ if(!defined('IN_ADMINCP')) exit();
 <div id="content-setting" class="hidden">
 <h2>系统设置</h2>
 <form method="post" action="admin.php?action=save_setting" id="setting_form" onsubmit="return post_win(this.action, this.id)">
-<p>功能增强</p>
+<p>功能增强:</p>
 <input type="hidden" name="formhash" value="<?php echo $formhash; ?>">
-<p><label><input type="checkbox" id="block_register" name="block_register" /> 关闭新用户注册功能</label></p>
+<p><label><input type="checkbox" id="account_switch" name="account_switch" /> 允许多用户切换</label></p>
+<p><label><input type="checkbox" id="autoupdate" name="autoupdate" /> 每天自动更新用户喜欢的贴吧 (稍占服务器资源)</label></p>
+<p>防恶意注册:</p>
+<p><label><input type="checkbox" id="block_register" name="block_register" /> 彻底关闭新用户注册功能</label></p>
+<p><label><input type="checkbox" id="register_check" name="register_check" /> 启用内置的简单防恶意注册系统 (可能会导致无法注册)</label></p>
+<p><label><input type="checkbox" id="register_limit" name="register_limit" /> 限制并发注册 (开启后可限制注册机注册频率)</label></p>
 <p><input type="text" name="invite_code" id="invite_code" placeholder="邀请码 (留空为不需要)" /></p>
-<p><label><input type="checkbox" id="autoupdate" name="autoupdate" /> 每天自动更新用户喜欢的贴吧 (Beta, 稍占服务器资源)</label></p>
 <p><input type="submit" value="保存设置" /></p>
 </form>
 <br>
@@ -96,30 +100,17 @@ foreach($classes as $id=>$obj){
 <p>安装相关插件能够增强 贴吧签到助手 的相关功能.（部分插件可能会影响系统运行效率）</p>
 <p>插件的设计可以参考 Github 上的项目介绍.</p>
 <p>将插件文件放到 /plugins/ 文件夹下即可在此处看到对应的插件程序.</p>
+<p>如果你觉得某个插件有问题，你可以先尝试禁用它，禁用操作不会丢失数据.</p>
+<p>插件下载: <a href="http://bbs.kookxiang.com/forum-addon-1.html" target="_blank">http://bbs.kookxiang.com/forum-addon-1.html</a></p>
 <table>
-<thead><tr><td style="width: 40px">#</td><td>插件标识符 (ID)</td><td>插件介绍</td><td>操作</td></tr></thead>
-<?php
-$i = 1;
-foreach($plugins as $plugin){
-	echo '<tr><td>'.$i++."</td><td>{$plugin[id]}</td><td>";
-	echo $plugin['obj']->description;
-	echo '</td><td>';
-	if($plugin['installed']){
-		if(method_exists($plugin['obj'], 'on_config')) echo '<a href="admin.php?action=config_plugin&pluginid='.$plugin['id'].'" class="link_config">设置</a> | ';
-		echo '<a href="admin.php?action=uninstall_plugin&pluginid='.$plugin['id'].'&formhash='.$formhash.'" class="link_uninstall">卸载</a>';
-	}else{
-		echo '<a href="admin.php?action=install_plugin&pluginid='.$plugin['id'].'&formhash='.$formhash.'" class="link_install">安装</a>';
-	}
-	echo '</td></tr>';
-}
-?>
+<thead><tr><td style="width: 40px">#</td><td>插件标识符 (ID)</td><td>插件介绍</td><td>当前版本</td><td>操作</td></tr></thead>
 <tbody></tbody>
 </table>
 </div>
 </div>
 </div>
 </div>
-<p class="copyright">当前版本：<?php echo VERSION; ?> - <a href="https://me.alipay.com/kookxiang" target="_blank">赞助开发</a><br>Designed by <a href="http://www.ikk.me" target="_blank">kookxiang</a>. 2013 &copy; <a href="http://www.kookxiang.com" target="_blank">KK's Laboratory</a><br>请勿擅自修改程序版权信息或将本程序用于商业用途！</p>
+<p class="copyright">当前版本：<?php echo VERSION; ?> - <a href="https://me.alipay.com/kookxiang" target="_blank">赞助开发</a><br>Designed by <a href="http://www.ikk.me" target="_blank">kookxiang</a>. 2013 &copy; <a href="http://www.kookxiang.com" target="_blank">KK's Laboratory</a><br>请勿擅自修改程序版权信息或将本程序用于商业用途！<br><?php echo DEBUG::output(); ?></p>
 </div>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script type="text/javascript">

@@ -28,27 +28,9 @@ $(document).ready(function() {
 		}, true);
 		return false;
 	});
-	$('.link_config').click(function(){
-		var link = this.href;
-		showloading();
-		$.getJSON(link, function(result){
-			createWindow().setTitle('插件设置').setContent('<form method="post" action="'+link+'" id="plugin_config" onsubmit="return post_win(this.action, this.id)"><input type="hidden" name="formhash" value="'+formhash+'">'+result.html+'</form>').addButton('确定', function(){ $('#plugin_config').submit(); }).addCloseButton('取消').append();
-		}).fail(function() { createWindow().setTitle('插件设置').setContent('发生未知错误: 无法打开插件设置面板').addCloseButton('确定').append(); }).always(function(){ hideloading(); });
-		return false;
-	});
 	$('.menubtn').click(function(){
 		$('.sidebar').fadeIn();
 		autohide_sidebar();
-	});
-	$('.link_install').click(function(){
-		var link = this.href;
-		createWindow().setTitle('安装插件').setContent('确定要安装这个插件吗？').addButton('确定', function(){ msg_redirect_action(link); }).addCloseButton('取消').append();
-		return false;
-	});
-	$('.link_uninstall').click(function(){
-		var link = this.href;
-		createWindow().setTitle('卸载插件').setContent('确定要卸载这个插件吗？').addButton('确定', function(){ msg_redirect_action(link); }).addCloseButton('取消').append();
-		return false;
 	});
 	$(window).on('hashchange', function() {
 		parse_hash();
@@ -83,10 +65,56 @@ function load_setting(){
 	showloading();
 	$.getJSON("admin.php?action=load_setting", function(result){
 		if(!result) return;
+		$('#account_switch').attr('checked', result.account_switch == 1);
+		$('#register_check').attr('checked', result.register_check == 1);
+		$('#register_limit').attr('checked', result.register_limit == 1);
 		$('#autoupdate').attr('checked', result.autoupdate == 1);
 		$('#block_register').attr('checked', result.block_register == 1);
 		$('#invite_code').attr('value', result.invite_code ? result.invite_code : '');
 	}).fail(function() { createWindow().setTitle('系统错误').setContent('发生未知错误: 无法获取当前系统设置').addCloseButton('确定').append(); }).always(function(){ hideloading(); });
+}
+function load_plugin(){
+	showloading();
+	$.getJSON("admin.php?action=load_plugin", function(result){
+		if(!result) return;
+		$('#content-plugin table tbody').html('');
+		$.each(result, function(i, field){
+			var mod_actions = '';
+			if(field.installed){
+				if(field.enabled){
+					mod_actions += '<a href="admin.php?action=disable_plugin&pluginid='+field.id+'&formhash='+formhash+'" class="link_disable">禁用</a> | ';
+					if(field.config) mod_actions += '<a href="admin.php?action=config_plugin&pluginid='+field.id+'" class="link_config">设置</a> | ';
+				}else{
+					mod_actions += '<a href="admin.php?action=enable_plugin&pluginid='+field.id+'&formhash='+formhash+'" class="link_enable">启用</a> | ';
+				}
+				mod_actions += '<a href="admin.php?action=uninstall_plugin&pluginid='+field.id+'&formhash='+formhash+'" class="link_uninstall">卸载</a>';
+			}else{
+				mod_actions += '<a href="admin.php?action=install_plugin&pluginid='+field.id+'&formhash='+formhash+'" class="link_install">安装</a>';
+			}
+			$("#content-plugin table tbody").append("<tr><td>"+(i+1)+"</td><td>"+field.id+"</td><td>"+field.description+"</td><td>"+field.version+"</td><td>"+mod_actions+"</td></tr>");
+		});
+		$('.link_enable, .link_disable').click(function(){
+			return msg_callback_action(this.href, load_plugin);
+		});
+		$('.link_install').click(function(){
+			var link = this.href;
+			createWindow().setTitle('安装插件').setContent('<p>确定要安装这个插件吗？</p>').addButton('确定', function(){ msg_callback_action(link, load_plugin); }).addCloseButton('取消').append();
+			return false;
+		});
+		$('.link_uninstall').click(function(){
+			var link = this.href;
+			createWindow().setTitle('卸载插件').setContent('<p>确定要卸载这个插件吗？</p><p>(卸载后该插件的数据可能会丢失)</p>').addButton('确定', function(){ msg_callback_action(link, load_plugin); }).addCloseButton('取消').append();
+			return false;
+		});
+		$('.link_config').click(function(){
+			var link = this.href;
+			showloading();
+			$.getJSON(link, function(result){
+				createWindow().setTitle('插件设置').setContent('<form method="post" action="'+link+'" id="plugin_config" onsubmit="return post_win(this.action, this.id)"><input type="hidden" name="formhash" value="'+formhash+'">'+result.html+'</form>').addButton('确定', function(){ $('#plugin_config').submit(); }).addCloseButton('取消').append();
+			}).fail(function() { createWindow().setTitle('插件设置').setContent('发生未知错误: 无法打开插件设置面板').addCloseButton('确定').append(); }).always(function(){ hideloading(); });
+			return false;
+		});
+	}).fail(function() { createWindow().setTitle('系统错误').setContent('发生未知错误: 无法获取插件列表').addCloseButton('确定').append(); }).always(function(){ hideloading(); });
 }
 function parse_hash(){
 	var hash = location.hash.substring(1);

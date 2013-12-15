@@ -38,8 +38,7 @@ if($_GET['action'] == 'cache'){
 			break;
 		case 'clear_cookie':
 			if($_GET['formhash'] != $formhash) break;
-			DB::query("UPDATE member SET cookie='' WHERE uid='{$uid}'");
-			CACHE::update('cookie');
+			DB::query("UPDATE member_setting SET cookie='' WHERE uid='{$uid}'");
 			DB::query("DELETE FROM my_tieba WHERE uid='{$uid}'");
 			DB::query("DELETE FROM sign_log WHERE uid='{$uid}'");
 			showmessage('已经解除百度账号绑定<br>您可以稍后重新进行绑定', './#baidu_bind#', 1);
@@ -49,8 +48,7 @@ if($_GET['action'] == 'cache'){
 			$cookie = pack('H*', daddslashes($_GET['cookie']));
 			if(!$cookie) showmessage('非法调用！', './#baidu_bind', 1);
 			if(!verify_cookie($cookie)) showmessage('无法登陆百度贴吧，请尝试重新绑定', './#baidu_bind', 1);
-			DB::query("UPDATE member SET cookie='{$cookie}' WHERE uid='{$uid}'");
-			CACHE::update('cookie');
+			save_cookie($uid, $cookie);
 			showmessage('绑定百度账号成功！<script type="text/javascript" src="?action=refresh_liked_tieba&formhash='.$formhash.'"></script><script type="text/javascript">try{ opener.load_guide_page(3); window.close(); }catch(e){}</script>', './#baidu_bind', 1);
 		case 'update_cookie':
 			if(!$_POST['cookie']) break;
@@ -59,8 +57,7 @@ if($_GET['action'] == 'cache'){
 			if(!preg_match('/BAIDUID=(.+?)/', $cookie)) showmessage('Cookie 信息不完整，请尝试重新获取', './#baidu_bind', 1);
 			if(!verify_cookie($cookie)) showmessage('无法登陆百度贴吧，请检查 Cookie 是否填写正确', './#baidu_bind', 1);
 			$cookie = daddslashes($cookie);
-			DB::query("UPDATE member SET cookie='{$cookie}' WHERE uid='{$uid}'");
-			CACHE::update('cookie');
+			save_cookie($uid, $cookie);
 			showmessage('您的 Cookie 信息已经更新<script type="text/javascript" src="?action=refresh_liked_tieba&formhash='.$formhash.'"></script>', './#baidu_bind', 1);
 			break;
 		case 'update_setting':
@@ -102,11 +99,13 @@ if($_GET['action'] == 'cache'){
 	exit();
 }
 
-// Multi User Support
-$query = DB::query("SELECT * FROM member_bind WHERE uid='{$uid}'");
-$users = array();
-while($result = DB::fetch($query)){
-	$users[ $result['_uid'] ] = $result['username'];
+if(getSetting('account_switch')){
+	// Multi User Support
+	$query = DB::query("SELECT * FROM member_bind WHERE uid='{$uid}'");
+	$users = array();
+	while($result = DB::fetch($query)){
+		$users[ $result['_uid'] ] = $result['username'];
+	}
 }
 
 include template('index');
