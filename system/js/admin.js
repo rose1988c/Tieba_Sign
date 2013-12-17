@@ -71,6 +71,8 @@ function load_setting(){
 		$('#autoupdate').attr('checked', result.autoupdate == 1);
 		$('#block_register').attr('checked', result.block_register == 1);
 		$('#invite_code').attr('value', result.invite_code ? result.invite_code : '');
+		$('#beian_no').attr('value', result.beian_no ? result.beian_no : '');
+		$('#stat_code').html(result.stat_code ? result.stat_code : '');
 	}).fail(function() { createWindow().setTitle('系统错误').setContent('发生未知错误: 无法获取当前系统设置').addCloseButton('确定').append(); }).always(function(){ hideloading(); });
 }
 function load_plugin(){

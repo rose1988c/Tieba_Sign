@@ -67,6 +67,8 @@ switch($_GET['action']){
 		saveSetting('autoupdate', ($_POST['autoupdate'] ? 1 : 0));
 		saveSetting('block_register', ($_POST['block_register'] ? 1 : 0));
 		saveSetting('invite_code', daddslashes($_POST['invite_code']));
+		saveSetting('beian_no', daddslashes(htmlspecialchars($_POST['beian_no'])));
+		saveSetting('stat_code', daddslashes($_POST['stat_code']));
 		showmessage('设置已经保存☆Kira~', 'admin.php#setting', 2);
 		break;
 	case 'deluser':
