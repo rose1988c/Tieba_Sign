@@ -73,6 +73,11 @@ function load_setting(){
 		$('#invite_code').attr('value', result.invite_code ? result.invite_code : '');
 		$('#beian_no').attr('value', result.beian_no ? result.beian_no : '');
 		$('#stat_code').html(result.stat_code ? result.stat_code : '');
+		$('input[name=jquery_mode]').attr('checked', false);
+		switch(result.jquery_mode){
+			case '1': case '2': case '3': case '4': $('#jquery_'+result.jquery_mode).attr('checked', true); break;
+			default: $('#jquery_1').attr('checked', true);
+		}
 	}).fail(function() { createWindow().setTitle('系统错误').setContent('发生未知错误: 无法获取当前系统设置').addCloseButton('确定').append(); }).always(function(){ hideloading(); });
 }
 function load_plugin(){

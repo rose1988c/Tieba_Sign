@@ -126,7 +126,7 @@ if(getSetting('account_switch')){
 </div>
 <p class="copyright">当前版本：<?php echo VERSION; ?> - <a href="https://me.alipay.com/kookxiang" target="_blank">赞助开发</a><?php if(getSetting('beian_no')) echo ' - <a href="http://www.miibeian.gov.cn/" target="_blank" rel="nofollow">'.getSetting('beian_no').'</a>'; ?><br>Designed by <a href="http://www.ikk.me" target="_blank">kookxiang</a>. 2013 &copy; <a href="http://www.kookxiang.com" target="_blank">KK's Laboratory</a><br>请勿擅自修改程序版权信息或将本程序用于商业用途！<br><?php HOOK::run('page_footer'); ?></p>
 </div>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="<?php echo jquery_path(); ?>"></script>
 <script type="text/javascript">
 var mobile = <?php echo IN_MOBILE ? '1' : '0'; ?>;
 var formhash = '<?php echo $formhash; ?>';

@@ -240,6 +240,19 @@ function runquery($sql){
 		if($query) DB::query($query);
 	}
 }
+function jquery_path(){
+	switch(getSetting('jquery_mode')){
+		default:
+		case 1:
+			return '//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js';
+		case 2:
+			return '//lib.sinaapp.com/js/jquery/1.10.2/jquery-1.10.2.min.js';
+		case 3:
+			return 'http://libs.baidu.com/jquery/1.10.2/jquery.js';
+		case 4:
+			return 'system/js/jquery.min.js';
+	}
+}
 // Function link
 function get_tbs($uid){
 	require_once SYSTEM_ROOT.'./function/sign.php';

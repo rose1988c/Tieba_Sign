@@ -61,6 +61,11 @@ if(!defined('IN_ADMINCP')) exit();
 <p><label><input type="checkbox" id="register_check" name="register_check" /> 启用内置的简单防恶意注册系统 (可能会导致无法注册)</label></p>
 <p><label><input type="checkbox" id="register_limit" name="register_limit" /> 限制并发注册 (开启后可限制注册机注册频率)</label></p>
 <p><input type="text" name="invite_code" id="invite_code" placeholder="邀请码 (留空为不需要)" /></p>
+<p>jQuery 加载方式:</p>
+<p><label><input type="radio" id="jquery_1" name="jquery_mode" value="1" /> 从 Google API 提供的 CDN 加载 (默认, 推荐)</label></p>
+<p><label><input type="radio" id="jquery_2" name="jquery_mode" value="2" /> 从 Sina App Engine 提供的 CDN 加载</label></p>
+<p><label><input type="radio" id="jquery_3" name="jquery_mode" value="3" /> 从 Baidu App Engine 提供的 CDN 加载 (不支持 SSL)</label></p>
+<p><label><input type="radio" id="jquery_4" name="jquery_mode" value="4" /> 使用程序自带的 jQuery 类库 (推荐)</label></p>
 <p>网站备案编号:</p>
 <p><input type="text" id="beian_no" name="beian_no" placeholder="未备案的不需要填写" /></p>
 <p>自定义统计代码:</p>
@@ -116,7 +121,7 @@ foreach($classes as $id=>$obj){
 </div>
 <p class="copyright">当前版本：<?php echo VERSION; ?> - <a href="https://me.alipay.com/kookxiang" target="_blank">赞助开发</a><br>Designed by <a href="http://www.ikk.me" target="_blank">kookxiang</a>. 2013 &copy; <a href="http://www.kookxiang.com" target="_blank">KK's Laboratory</a><br>请勿擅自修改程序版权信息或将本程序用于商业用途！<br><?php echo DEBUG::output(); ?></p>
 </div>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="<?php echo jquery_path(); ?>"></script>
 <script type="text/javascript">
 var mobile = <?php echo IN_MOBILE ? '1' : '0'; ?>;
 var formhash = '<?php echo $formhash; ?>';
