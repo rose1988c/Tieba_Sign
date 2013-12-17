@@ -62,6 +62,7 @@ switch($_GET['action']){
 	case 'save_setting':
 		if($formhash != $_POST['formhash']) showmessage('来源不可信，请重试', 'admin.php#setting');
 		saveSetting('account_switch', ($_POST['account_switch'] ? 1 : 0));
+		saveSetting('register_limit', ($_POST['register_limit'] ? 1 : 0));
 		saveSetting('register_check', ($_POST['register_check'] ? 1 : 0));
 		saveSetting('autoupdate', ($_POST['autoupdate'] ? 1 : 0));
 		saveSetting('block_register', ($_POST['block_register'] ? 1 : 0));
