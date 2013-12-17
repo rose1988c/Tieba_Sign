@@ -226,9 +226,12 @@ function getSetting($k, $force = false){
 	return $cache[$k];
 }
 function saveSetting($k, $v){
+	static $cache_cleaned = false;
 	$v = addslashes($v);
 	DB::query("REPLACE INTO setting SET v='{$v}', k='{$k}'");
+	if($cache_cleaned) return;
 	CACHE::update('setting');
+	$cache_cleaned = true;
 }
 function runquery($sql){
 	$sql = str_replace("\r", "\n", $sql);
