@@ -91,7 +91,7 @@ input[type=submit]:hover, button:hover, .btn:hover { background: #1e2a36; border
 .menu li a:hover { color: #dedede; text-decoration: none; }
 .menu_switch_user .del { float: right; background: url(delete.png) no-repeat 0 50%; padding: 19px 18px 19px 0; text-indent: -9999px; overflow: hidden; height: 0; display: none; }
 .menu_switch_user:hover .del{ display: block; }
-.copyright { margin-top: 65px; color: #4c4c4c; text-align: center; font-size: 12px; padding-bottom: 2em; }
+.copyright { margin-top: 65px; margin-bottom: 0; color: #4c4c4c; text-align: center; font-size: 12px; padding-bottom: 2em; }
 .copyright a { color: #159; }
 #page_login .copyright { margin-top: 150px; }
 .loading-icon { color: #000; background: #fff; position: fixed; top: 50%; right: 50%; padding: 20px 50px; border: 1px solid #dedede; border-radius: 5px; line-height: 20px; height: 20px; width: 70px; font-size: 12px; cursor: default; margin: -30px -85px; text-align: center; box-shadow: #9c9c9c 0 0 100px; animation: showfwin .3s; -webkit-animation: showfwin .3s; -moz-animation: showfwin .3s; z-index: 20; }
