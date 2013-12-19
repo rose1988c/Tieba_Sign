@@ -139,7 +139,7 @@ EOF;
 				'password' => $password,
 				'email' => $email,
 			));
-			DB::insert('member_setting', array('uid' => $uid));
+			DB::insert('member_setting', array('uid' => $uid, 'cookie' => ''));
 			CACHE::update('username');
 			CACHE::save('user_setting_'.$uid, '');
 			do_login($uid);
