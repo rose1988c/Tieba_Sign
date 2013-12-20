@@ -18,9 +18,13 @@ while($result = DB::fetch($query)){
 	if($result['Field'] == 'module') DB::query('ALTER TABLE `plugin` DROP `module`');
 }
 
+CACHE::clear();
+
 CACHE::update('plugins');
 
-CACHE::clear();
+saveSetting('register_limit', 1);
+saveSetting('register_check', 1);
+saveSetting('jquery_mode', 2);
 
 saveSetting('version', '1.13.12.15');
 showmessage('成功更新到 1.13.12.15！', './');
