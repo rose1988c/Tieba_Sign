@@ -242,13 +242,13 @@ function runquery($sql){
 }
 function jquery_path(){
 	switch(getSetting('jquery_mode')){
-		default:
 		case 1:
 			return '//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js';
 		case 2:
 			return '//lib.sinaapp.com/js/jquery/1.10.2/jquery-1.10.2.min.js';
 		case 3:
 			return 'http://libs.baidu.com/jquery/1.10.2/jquery.js';
+		default:
 		case 4:
 			return 'system/js/jquery.min.js';
 	}
