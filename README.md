@@ -3,6 +3,8 @@
 
 通过 BAE / SAE / CronTab 的计划任务实现百度贴吧自动签到。
 
+**下载请前往：http://buildbot.ikk.me**
+
 ![screenshot](http://ww1.sinaimg.cn/large/9b110883gw1e7r981cb6zj21060g40ud.jpg "screenshot")  
 
 安装教程：
