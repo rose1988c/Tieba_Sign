@@ -230,7 +230,7 @@ function saveSetting($k, $v){
 	$v = addslashes($v);
 	DB::query("REPLACE INTO setting SET v='{$v}', k='{$k}'");
 	if($cache_cleaned) return;
-	CACHE::update('setting');
+	CACHE::clean('setting');
 	$cache_cleaned = true;
 }
 function runquery($sql){
