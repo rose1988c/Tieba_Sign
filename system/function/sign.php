@@ -86,6 +86,13 @@ function _update_liked_tieba($uid, $ignore_error = false, $allow_deletion = true
 		if($ignore_error) return;
 		showmessage('无法获取喜欢的贴吧，请更新 Cookie 信息', './#baidu_bind');
 	}
+	if($limit = getSetting('max_tieba')){
+		$count = count($liked_tieba);
+		if($limit < $count){
+			if($ignore_error) return;
+			showmessage("<p>您共计关注了 {$count} 个贴吧，</p><p>管理员限制了每位用户最多关注 {$limit} 个贴吧</p>", './#liked_tieba');
+		}
+	}
 	$my_tieba = array();
 	$query = DB::query("SELECT name, fid, tid FROM my_tieba WHERE uid='{$uid}'");
 	while($r = DB::fetch($query)) {

@@ -131,6 +131,7 @@ if(getSetting('account_switch')){
 var mobile = <?php echo IN_MOBILE ? '1' : '0'; ?>;
 var formhash = '<?php echo $formhash; ?>';
 </script>
+<script src="system/js/kk_dropdown.js?version=<?php echo VERSION; ?>"></script>
 <script src="system/js/main.js?version=<?php echo VERSION; ?>"></script>
 <script src="system/js/fwin.js?version=<?php echo VERSION; ?>"></script>
 <script type="text/javascript">defered_js.push('//api.ikk.me/guide.js');</script>

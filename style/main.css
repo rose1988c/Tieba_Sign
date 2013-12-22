@@ -116,6 +116,14 @@ input[type=submit]:hover, button:hover, .btn:hover { background: #1e2a36; border
 #page_index h1 { background: #1b2224; color: #fff; padding: 0 15px; margin: -10px -15px 0; height: 50px; line-height: 50px; z-index: 5; position: relative; }
 #page_index .main-content { color: #000; }
 
+div.select { position: relative; display: inline; padding: 3px 5px; margin: 2px 5px; text-align: center; border: 1px solid #dedede; border-radius: 3px; cursor: pointer; }
+div.select .icon { font-size: 8px; vertical-align: middle; margin-left: 10px; }
+div.select:hover { border-color: #bdbdbd; }
+
+.dropdown { display: none; position: absolute; z-index: 500; list-style: none; width: auto; min-width: 150px; max-width: 500px; overflow: hidden; background: #fefefe; border: 1px solid #dedede; border-radius: 5px; box-shadow: 2px 2px 10px #bdbdbd; margin: -3px 0 0 0; padding: 0; }
+.dropdown li { color: #000; height: 32px; line-height: 32px; padding: 0 15px; border-bottom: 1px solid #dedede; margin-bottom: -1px; overflow: hidden; cursor: default; }
+.dropdown li:hover { color: #fff; background: #15f; }
+
 .fwin { animation: showfwin .3s; -webkit-animation: showfwin .3s; -moz-animation: showfwin .3s; position: absolute; position: fixed; width: 400px; z-index: 50; background-color: #f5f5f5; border: 1px solid #cdcdcd; border-radius: 5px; padding: 5px; box-shadow: #9c9c9c 0 0 100px; }
 .fwin .close { display: block; overflow: hidden; position: relative; float: right; right: 3px; top: 3px; text-indent: -999px; width: 0; height: 0; background: url(close.gif); padding: 10px; cursor: pointer; }
 .fwin .close:hover { background-position: 0 100%; }
