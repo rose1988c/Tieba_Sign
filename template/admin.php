@@ -134,10 +134,7 @@ foreach($classes as $id=>$obj){
 <p class="copyright">当前版本：<?php echo VERSION; ?> - <a href="https://me.alipay.com/kookxiang" target="_blank">赞助开发</a><br>Designed by <a href="http://www.ikk.me" target="_blank">kookxiang</a>. 2013 &copy; <a href="http://www.kookxiang.com" target="_blank">KK's Laboratory</a><br>请勿擅自修改程序版权信息或将本程序用于商业用途！<br><?php echo DEBUG::output(); ?></p>
 </div>
 <script src="<?php echo jquery_path(); ?>"></script>
-<script type="text/javascript">
-var mobile = <?php echo IN_MOBILE ? '1' : '0'; ?>;
-var formhash = '<?php echo $formhash; ?>';
-</script>
+<script type="text/javascript">var formhash = '<?php echo $formhash; ?>';var version = '<?php echo VERSION; ?>';</script>
 <script src="system/js/kk_dropdown.js?version=<?php echo VERSION; ?>"></script>
 <script src="system/js/admin.js?version=<?php echo VERSION; ?>"></script>
 <script src="system/js/fwin.js?version=<?php echo VERSION; ?>"></script>
