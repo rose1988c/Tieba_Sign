@@ -22,7 +22,9 @@ if(!defined('IN_KKFRAME')) exit();
 <span class="icon"></span>
 <ul>
 <li id="menu_login" class="current">登陆</li>
+<?php if(!getSetting('block_register')) { ?>
 <li id="menu_register">注册</li>
+<?php } ?>
 </ul>
 </div>
 <div class="main" id="content-login">
@@ -39,6 +41,7 @@ if(!defined('IN_KKFRAME')) exit();
 <p><input type="submit" value="登录" tabindex="3" /></p>
 </form>
 </div>
+<?php if(!getSetting('block_register')){ ?>
 <div class="main hidden" id="content-register">
 <h1>注册</h1>
 <form method="post" action="member.php?action=register">
@@ -58,6 +61,7 @@ if($invite_code) echo '<p>邀请码：</p><p><input type="text" name="invite_cod
 <p><input type="submit" value="注册" tabindex="4" /></p>
 </form>
 </div>
+<?php } ?>
 <div class="main hidden" id="content-find_password">
 <h1>找回密码</h1>
 <form method="post" action="member.php?action=find_password">
