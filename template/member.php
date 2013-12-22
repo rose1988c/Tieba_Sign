@@ -79,6 +79,5 @@ HOOK::run('member_footer');
 if(getSetting('stat_code')) echo '<div class="hidden">'.getSetting('stat_code').'</div>';
 ?>
 </div>
-<iframe src="index.php?action=cache_frame" style="display: none"></iframe>
 </body>
 </html>

@@ -1,14 +1,7 @@
 <?php
 require_once './system/common.inc.php';
 
-if($_GET['action'] == 'cache'){
-	header('Content-Type: text/cache-manifest');
-	include template('appcache');
-	exit();
-}elseif($_GET['action'] == 'cache_frame'){
-	echo '<!DOCTYPE html><html manifest="index.php?action=cache"><head><title>HTML5 Application Cache</title></head><body><p>This page will be cached by your browser.</p></body></html>';
-	exit();
-}elseif(!$uid){
+if(!$uid){
 	header('Location: member.php');
 	exit();
 }elseif($_GET['action']){

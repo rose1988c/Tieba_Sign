@@ -139,6 +139,5 @@ var formhash = '<?php echo $formhash; ?>';
 HOOK::run('page_footer_js');
 if(getSetting('stat_code')) echo '<div class="hidden">'.getSetting('stat_code').'</div>';
 ?>
-<iframe src="index.php?action=cache_frame" style="display: none"></iframe>
 </body>
 </html>
