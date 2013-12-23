@@ -105,6 +105,6 @@ saveSetting('register_limit', 1);
 saveSetting('register_check', 1);
 saveSetting('jquery_mode', 2);
 
-saveSetting('version', '1.13.12.15');
-showmessage('1.13.12.15 安装成功！', './', 1);
+saveSetting('version', '1.13.12.25');
+showmessage('1.13.12.25 安装成功！', './', 1);
 ?>
