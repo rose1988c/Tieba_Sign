@@ -5,10 +5,12 @@ $count = DB::result_first("SELECT COUNT(*) FROM `sign_log` WHERE status IN (0, 1
 if($count){
 	$num = 0;
 	$first = true;
-	while($num++ < 25){
+	while($num++ < 30){
 		$offset = rand(1, $count) - 1;
-		$tid = DB::result_first("SELECT tid FROM `sign_log` WHERE status IN (0, 1) AND date='{$date}' LIMIT {$offset},1");
+		$res = DB::fetch_first("SELECT tid, status FROM `sign_log` WHERE status IN (0, 1) AND date='{$date}' LIMIT {$offset},1");
+		$tid = $res['tid'];
 		if(!$tid) break;
+		if($res['status'] == 2 || $res['status'] == -2) continue;
 		$tieba = DB::fetch_first("SELECT * FROM my_tieba WHERE tid='{$tid}'");
 		if($tieba['skiped'] || !$tieba){
 			DB::query("UPDATE sign_log set status='-2' WHERE tid='{$tieba[tid]}' AND date='{$date}'");
