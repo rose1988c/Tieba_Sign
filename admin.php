@@ -66,9 +66,9 @@ switch($_GET['action']){
 		saveSetting('register_check', ($_POST['register_check'] ? 1 : 0));
 		saveSetting('autoupdate', ($_POST['autoupdate'] ? 1 : 0));
 		saveSetting('block_register', ($_POST['block_register'] ? 1 : 0));
-		saveSetting('invite_code', daddslashes($_POST['invite_code']));
-		saveSetting('beian_no', daddslashes(htmlspecialchars($_POST['beian_no'])));
-		saveSetting('stat_code', daddslashes($_POST['stat_code']));
+		saveSetting('invite_code', stripslashes(daddslashes($_POST['invite_code'])));
+		saveSetting('beian_no', stripslashes(daddslashes(htmlspecialchars($_POST['beian_no']))));
+		saveSetting('stat_code', stripslashes(daddslashes($_POST['stat_code'])));
 		saveSetting('jquery_mode', intval($_POST['jquery_mode']));
 		saveSetting('max_tieba', intval($_POST['max_tieba']));
 		showmessage('设置已经保存☆Kira~', 'admin.php#setting', 2);
